@@ -11,6 +11,10 @@ class _Formulario extends State<Formulario>{
   TextEditingController inputController = TextEditingController();
   List<Widget> valoresIngresadosPorUsuario = [];
 
+
+  TextEditingController userController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -44,7 +48,24 @@ class _Formulario extends State<Formulario>{
               ),
               Column(
                 children: valoresIngresadosPorUsuario,
-              )
+              ),
+              Divider(),
+              TextField(
+                controller: userController,
+                decoration: InputDecoration(
+                  hintText: "Ingrese su usuario"
+                ),
+              ),
+              TextField(
+                controller: passwordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                  hintText: "Ingrese su contraseña"
+                ),
+              ),
+              ElevatedButton(onPressed: (){
+                    validarTextos();
+                  }, child: Text("Validar"))
             ],
           )
         ],
@@ -83,5 +104,38 @@ class _Formulario extends State<Formulario>{
           return dialog;
     });
   }
+  
+  void validarTextos() {
+    String usuario = userController.text;
+    String password = passwordController.text;
+    RegExp regex = RegExp(
+    r'^(?=.[a-z])(?=.[A-Z])(?=.*[.!@/()]).{5,}$'
+    );
+    if(usuario.trim() == "" || password.trim() == ""){
+      mostrarAlert("Error. Usuario o contraseña vacíos");
+    }
+    else if(!regex.hasMatch(password)){
+      mostrarAlert("Error. Contraseña no cumple parametros");
+    }
+    else{
+      mostrarAlert("Datos Válidos");
+    }
+  }
+  
+  void mostrarAlert(String texto) {
+
+    AlertDialog dialog = AlertDialog(
+      content: Text(texto),
+      actions: [
+        TextButton(onPressed: (){Navigator.pop(context);}, child: Text("Ok")),
+      ]
+    );
+    showDialog(
+        context: context,
+        builder: (BuildContext context){
+          return dialog;
+    });
+
+  }
 
 }
