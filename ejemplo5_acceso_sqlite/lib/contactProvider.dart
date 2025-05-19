@@ -53,5 +53,13 @@ class ContactProvider {
       ]);
   }
 
+  Future<void> eliminarContacto(String id) async{
+    await this.db!.rawDelete("""
+        DELETE FROM Contactos WHERE _id = ?
+      """, [
+        id
+      ]);
+  }
+
 
 }

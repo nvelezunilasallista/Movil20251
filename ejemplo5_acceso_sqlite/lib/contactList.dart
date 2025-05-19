@@ -46,7 +46,10 @@ class _ContactList extends State<ContactList>{
           Text(response.listaContactos[i].nombre+
           " "+response.listaContactos[i].apellidos),
           Text(response.listaContactos[i].telefono),
-          Text(response.listaContactos[i].email)
+          Text(response.listaContactos[i].email),
+          ElevatedButton(onPressed: (){
+            mostrarAlertEliminacion(response.listaContactos[i].id);
+          }, child: Text("Eliminar"))
         ],),
       );
       contactosAMostrar.add(card);
@@ -55,4 +58,26 @@ class _ContactList extends State<ContactList>{
       this.listadoContactos = contactosAMostrar;
     });
   }
+
+  void mostrarAlertEliminacion(String id){
+    AlertDialog dialog = AlertDialog(
+      content: Text("¿Está seguro que desea eliminar?"),
+      actions: [
+        TextButton(onPressed: (){eliminarContacto(id); Navigator.pop(context);}, child: Text("Sí")),
+        TextButton(onPressed: (){Navigator.pop(context);}, child: Text("No")),
+      ]
+    );
+    showDialog(
+        context: context,
+        builder: (BuildContext context){
+          return dialog;
+    });
+  }
+  
+  void eliminarContacto(String id) async {
+    ContactProvider provider = ContactProvider();
+    await provider.init(); 
+    await provider.eliminarContacto(id);
+  }
+   
 }
