@@ -31,7 +31,7 @@ class ContactProvider {
                                     );
                                     """
                                   );
-                               }, version: 3 );
+                               }, version: 4 );
   }
 
 
@@ -53,11 +53,11 @@ class ContactProvider {
 
   Future<void> agregarContacto(ContactModel contacto) async{
     await this.db!.rawInsert("""
-        INSERT INTO Contactos(_id, nombre, apellidos, email, telefono)
-        VALUES( ?,?,?,?,? )
+        INSERT INTO Contactos(_id, nombre, apellidos, email, telefono, sincronizado)
+        VALUES( ?,?,?,?,?,? )
       """, [
         contacto.id, contacto.nombre, contacto.apellidos,
-        contacto.email, contacto.telefono
+        contacto.email, contacto.telefono, '0'
       ]);
   }
 
